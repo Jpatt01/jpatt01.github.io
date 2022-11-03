@@ -1,0 +1,852 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>hierarchy</title>
+<link href="CSS/styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="curzr" hidden></div>
+<script>
+class GlitchEffect {
+  constructor() {
+    this.root = document.body
+    this.cursor = document.querySelector(".curzr")
+
+    this.distanceX = 0, 
+    this.distanceY = 0,
+    this.pointerX = 0,
+    this.pointerY = 0,
+    this.previousPointerX = 0
+    this.previousPointerY = 0
+    this.cursorSize = 25
+    this.glitchColorB = '#00feff'
+    this.glitchColorR = '#ff4f71'
+
+    this.cursorStyle = {
+      boxSizing: 'border-box',
+      position: 'fixed',
+      top: `${ this.cursorSize / -2 }px`,
+      left: `${ this.cursorSize / -2 }px`,
+      zIndex: '2147483647',
+      width: `${ this.cursorSize }px`,
+      height: `${ this.cursorSize }px`,
+      backgroundColor: '#222',
+      borderRadius: '50%',
+      boxShadow: `0 0 0 ${this.glitchColorB}, 0 0 0 ${this.glitchColorR}`,
+      transition: '100ms, transform 100ms',
+      userSelect: 'none',
+      pointerEvents: 'none'
+    }
+
+    if (CSS.supports("backdrop-filter", "invert(1)")) {
+      this.cursorStyle.backdropFilter = 'invert(1)'
+      this.cursorStyle.backgroundColor = '#fff0'
+    } else {
+      this.cursorStyle.backgroundColor = '#222'
+    }
+
+    this.init(this.cursor, this.cursorStyle)
+  }
+
+  init(el, style) {
+    Object.assign(el.style, style)
+    this.cursor.removeAttribute("hidden")
+    
+  }
+
+  move(event) {
+    this.previousPointerX = this.pointerX
+    this.previousPointerY = this.pointerY
+    this.pointerX = event.pageX + this.root.getBoundingClientRect().x
+    this.pointerY = event.pageY + this.root.getBoundingClientRect().y
+    this.distanceX = Math.min(Math.max(this.previousPointerX - this.pointerX, -10), 10)
+    this.distanceY = Math.min(Math.max(this.previousPointerY - this.pointerY, -10), 10)
+
+    if (event.target.localName === 'button' || 
+        event.target.localName === 'a' || 
+        event.target.onclick !== null ||
+        event.target.className.includes('curzr-hover')) {
+      this.hover()
+    } else {
+      this.hoverout()
+    }
+
+    this.cursor.style.transform = `translate3d(${this.pointerX}px, ${this.pointerY}px, 0)`
+    this.cursor.style.boxShadow = `
+      ${+this.distanceX}px ${+this.distanceY}px 0 ${this.glitchColorB}, 
+      ${-this.distanceX}px ${-this.distanceY}px 0 ${this.glitchColorR}`
+    this.stop()
+  }
+
+  hover() {
+  }
+
+  hoverout() {
+  }
+
+  click() {
+    this.cursor.style.transform += ` scale(0.75)`
+    setTimeout(() => {
+      this.cursor.style.transform = this.cursor.style.transform.replace(` scale(0.75)`, '')
+    }, 35)
+  }
+
+  stop() {
+    if (!this.moving) {
+      this.moving = true
+      setTimeout(() => {
+        this.cursor.style.boxShadow = ''
+        this.moving = false
+      }, 50)
+    }
+  }
+
+  remove() {
+    this.cursor.remove()
+  }
+}
+
+(() => {
+  const cursor = new GlitchEffect()
+  if(!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    document.onmousemove = function (event) {
+      cursor.move(event)
+    }
+    document.onclick = function () {
+      cursor.click()
+    }
+  } else {
+    cursor.remove()
+  }
+})()
+</script>	
+<div class="topnav">
+
+<a href="artists.html">Artists</a>
+<a href="graphic.html">Graphic</a>
+<a href="spatial.html">Spatial</a>
+<a href="about.html">About</a>
+</div>
+	
+<a href="index.html"><h1>About</h1></a>
+<div class="row">
+  <div class="column">
+    <p><a class="tracking">Hierarchy</a> in design is the organization of content by emphasizing certain elements and words and by
+subordinating the other elements and text. Hierarchy implies importance and influences what people 
+see first. The use of hierarchy helps people to know where to enter and exit a site and what to pick or 
+choose. Hierarchy also adds structure to text, creating direction and visual organization. There are many 
+cues that a designer or artist can use to portray hierarchy. </p>
+  </div>
+  <div class="column2">
+    <p>There are spatial cues, which include the use of indent, line spacing, placement, and kerning. Graphic cues include size/scale, style, and color. There is also the use of contrast, scale, perspective, and even depth in order to portray hierarchy. Even through the use italics, bold, small caps, a different text color, or even a different font, emphasis and hierarchy can be portrayed.</p>
+  </div>
+</div>
+	
+<div class="row">
+<div class="column3">
+    <p class="para1">
+	<a>“To create an elegant economy of signals, try using no more than 
+	three cues for each level in a break document.”</a> 
+	<br>
+	- Ellen Lupton
+	</p>
+</div>
+	
+ <hr class="verical-line"
+	 width="1" 
+	 size="750" 
+	 style="0 auto"
+	 color="#E4913D"
+	 right/>
+	
+<div class="column4">
+    <div class="container">
+  	<img src="images/time-out-dave-brubeck.jpg" width="100%" height="100%" alt="Avatar" class="image">
+  	<div class="overlay">
+    	<div class="text">
+		Title
+	    <br> 
+		Artist Name
+	 	</div>
+  </div>
+</div>
+</div>
+</div>
+<style>
+	
+@media (max-width: 1920px){	
+h1::before {  
+  transform: scaleX(0);
+  transform-origin: bottom right;
+}
+h1:hover::before {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+h1::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  inset: 0 0 0 0;
+  background: #FF3A32;
+  z-index: -1;
+  transition: transform .3s ease;
+}
+h1 {
+  position: relative;
+  font-size: 5rem;
+}
+html {
+  block-size: 100%;
+  inline-size: 100%;
+}
+h1{
+	background: ;
+	background-size: 100%;
+	font-size: 100px;
+	text-align: right;
+	margin-right: 76%;
+	margin-left: -8%;
+	padding-right: 2%;
+	color: #070803;
+	text-decoration: none;
+	font-family: futura-pt, sans-serif;
+	font-variant: small-caps;
+	font-style: normal;
+	font-weight: bold;
+}	
+a:hover span {
+  text-decoration: underline;
+  color: blue!important;
+}
+.container {
+  position: absolute;
+  margin: 0px;
+  width: auto;
+} 	
+.topnav {
+  overflow: hidden;
+  display: block;
+  margin-right: 1%;
+  margin-top: 1%;
+  background-color: #FFFFFF;
+  
+}
+.topnav a {
+  float: right;
+  color: #020000;
+  text-align: center;
+  padding: 14px 16px;
+  width: 5%;
+  text-decoration: none;
+  text-align: center;
+  font-size: 17px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+}
+.topnav a:hover {
+  background-color: #FF3A32;
+  color: white;
+}
+.burbeck{
+  margin-left: 55%;
+  margin-right: 10%;
+  margin-bottom: 7%;
+  width: 50%;
+  height: 50%;
+	}
+.anne{
+  margin-left: 25%;
+  margin-right: 10%;
+  width: 50%;
+  height: 50%;
+  margin-bottom: 3%;
+	}
+a{
+	text-decoration: none;
+	color: #E4913D;	
+	}
+.para1{
+  margin-left: 50%;
+  margin-right: 0;
+  font-size: 30px;
+  width: 260%;
+  text-align: right;
+  color: #525252;
+  text-decoration: none;
+  font-family: futura-pt, sans-serif;
+  font-variant: small-caps;
+  font-style: oblique;
+  font-weight: bold;
+  margin-bottom: 8%;
+  margin-top: 2%;
+}
+.para4{
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: left;
+  font-size: 14px;
+  margin-left: 30%;
+  margin-right: 2%;
+  width: 40%;
+  display: block;
+  margin-bottom: 8%;
+}
+* {
+  box-sizing: inherit;
+}
+.row {
+  display: flex;
+}
+p{
+  width: 84%;
+	}
+.column {
+  flex: 50%;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  font-size: 14px;
+  margin-left: 25%;
+  margin-right: 0%;
+  width: 1px;
+  display: block;
+  margin-bottom: 6%;
+  margin-top: 3%;
+  text-align-last: right;
+  -moz-text-align-last: right
+}
+.column2 {
+  flex: 50%;
+  margin-top: 3%;
+  padding: 0px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  font-size: 14px;
+  margin-right: 15%;
+  margin-bottom: 6%;
+  display: block;
+  text-align-last: right;
+  -moz-text-align-last: right
+}
+.tracking{
+	letter-spacing: 4px;
+	font-style: italic;
+	color: black;
+	font-weight: bold;
+}
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-left: 10%;
+  margin-right: 0%;
+  margin-top: 2%;
+  margin-bottom: 10%;
+  width: 100%;
+  height: 100%;
+	}
+.overlay {
+  position: absolute;
+  margin-left: 10%;
+  margin-right: 0%;
+  margin-top: 2%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90%;
+  width: 100%;
+  margin-bottom: 10%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #394B7D;
+}
+.container:hover .overlay {
+  opacity: 1;
+}
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: futura-pt, sans-serif;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: right;
+}
+.column3{
+  flex: 50%;
+  margin-left: 10%;
+  margin-right: 0%;
+  width: 0px;
+  display: block;
+  margin-bottom: 6%;
+  margin-top: 3%;
+}
+.column4{
+  flex: 50%;
+  margin-top: 3%;
+  padding: 0px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  font-size: 14px;
+  margin-right: 45%;
+  margin-bottom: 6%;
+  display: block;
+  text-align-last: right;
+  -moz-text-align-last: right	
+}
+.verical-line{
+		display: inline-flex;
+		margin-left: 25%;
+		width: 6px;
+	}
+	
+@media (max-width: 1280px){
+.image {
+  display: block;
+  height: auto;
+  margin-left: 0%;
+  margin-right: 0%;
+  margin-top: 2%;
+  margin-bottom: 10%;
+  width: 50px;
+  height: 50px;
+	}
+.para1{
+  margin-left: -30%;
+  margin-right: 0;
+  font-size: 30px;
+  width: 550%;
+  text-align: right;
+  color: #525252;
+  text-decoration: none;
+  font-family: futura-pt, sans-serif;
+  font-variant: small-caps;
+  font-style: oblique;
+  font-weight: bold;
+  margin-bottom: 8%;
+  margin-top: 2%;
+}
+p{
+  width: 4%;
+	}
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-left: 10%;
+  margin-right: 0%;
+  margin-top: 2%;
+  margin-bottom: 10%;
+  width: 100%;
+  height: 100%;
+	}
+.overlay {
+  position: absolute;
+  margin-left: 10%;
+  margin-right: 0%;
+  margin-top: 2%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90%;
+  width: 100%;
+  margin-bottom: 10%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #394B7D;
+}
+.container:hover .overlay {
+  opacity: 1;
+}
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: futura-pt, sans-serif;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: right;
+}
+.column3{
+  flex: 50%;
+  margin-left: 10%;
+  margin-right: 0%;
+  width: 0px;
+  display: block;
+  margin-bottom: 6%;
+  margin-top: 3%;
+}
+.column4{
+  flex: 50%;
+  margin-top: 3%;
+  padding: 0px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  font-size: 14px;
+  margin-right: 55%;
+  margin-bottom: 6%;
+  display: block;
+  text-align-last: right;
+  -moz-text-align-last: right	
+}
+.verical-line{
+		display: inline-flex;
+		margin-left: 25%;
+		width: 6px;
+	}
+h1::before {  
+  transform: scaleX(0);
+  transform-origin: bottom right;
+}
+h1:hover::before {
+  transform: scaleX(1);
+	width: 100%;
+  transform-origin: bottom left;
+}
+h1::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  inset: 0 0 0 0;
+  background: #FF3A32;
+  z-index: -1;
+  
+  transition: transform .3s ease;
+}
+h1 {
+  position: relative;
+  font-size: 5rem;
+	width: 30%;
+}
+html {
+  block-size: 100%;
+  inline-size: 100%;
+}
+h1{
+	background: ;
+	background-size: 100%;
+	font-size: 100px;
+	text-align: right;
+	margin-right: 76%;
+	margin-left: -5%;
+	padding-right: 2%;
+	color: #070803;
+	text-decoration: none;
+	font-family: futura-pt, sans-serif;
+	font-variant: small-caps;
+	font-style: normal;
+	font-weight: bold;
+}	
+a:hover span {
+  text-decoration: underline;
+  color: blue!important;
+}
+.container {
+  position: absolute;
+  margin: 0px;
+  width: auto;
+} 	
+.topnav {
+  overflow: hidden;
+  display: block;
+  margin-right: 1%;
+  margin-top: 1%;
+  background-color: #FFFFFF;
+  
+}
+.topnav a {
+  float: right;
+  color: #020000;
+  text-align: center;
+  padding: 14px 16px;
+  width: 5%;
+  text-decoration: none;
+  text-align: center;
+  font-size: 17px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+}
+.topnav a:hover {
+  background-color: #FF3A32;
+  color: white;
+}
+p{
+  width: 90%;
+	}
+.column {
+  flex: 50%;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  font-size: 14px;
+  margin-left: 24%;
+  margin-right: 0%;
+  width: 1px;
+  display: block;
+  margin-bottom: 6%;
+  margin-top: 3%;
+  text-align-last: right;
+  -moz-text-align-last: right
+}
+.column2 {
+  flex: 50%;
+  margin-top: 3%;
+  padding: 0px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  font-size: 14px;
+  margin-right: 20%;
+  margin-bottom: 6%;
+  display: block;
+  text-align-last: left;
+  -moz-text-align-last: left;
+}
+}	
+	
+@media (max-width: 414px){	
+.image {
+  display: block;
+  height: auto;
+  margin-left: 0%;
+  margin-right: 0%;
+  margin-top: 20%;
+  margin-bottom: 10%;
+  width: 50px;
+  height: 50px;
+	}
+.para1{
+  margin-left:0%;
+  margin-right: 0;
+  font-size: 20px;
+  width: 100%;
+  text-align: right;
+  color: #525252;
+  text-decoration: none;
+  font-family: futura-pt, sans-serif;
+  font-variant: small-caps;
+  font-style: oblique;
+  font-weight: bold;
+  margin-bottom: 8%;
+  margin-top: 2%;
+}
+p{
+  width: 3%;
+	}
+.image {
+  display:table-row-group;
+  width: 100%;
+  height: auto;
+  margin-left: 4%;
+  margin-right: 4%;
+  margin-top: 2%;
+  margin-bottom: 10%;
+  width: 90%;
+  height: 90%;
+	}
+.overlay {
+  position: absolute;
+  margin-left: 4%;
+  margin-right: 4%;
+  margin-top: 2%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90%;
+  width: 90%;
+  margin-bottom: 10%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #394B7D;
+}
+.container:hover .overlay {
+  opacity: 1;
+}
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: futura-pt, sans-serif;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: right;
+}
+.column3{
+  flex: 50%;
+  margin-left: 5%;
+  margin-right: 0%;
+  width: 100%;
+  display: none;
+ine;
+  margin-bottom: 6%;
+  margin-top: 3%;
+}
+.column4{
+  flex: 50%;
+  margin-top: 2%;
+  padding: 0px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  font-size: 14px;
+  margin-right: 30%;
+  margin-bottom: 6%;
+  display: table-column;
+  text-align-last: right;
+  -moz-text-align-last: right	
+}
+.verical-line{
+		display: none;
+		margin-left: 25%;
+		width: 6px;
+	}
+h1::before {  
+  transform: scaleX(0);
+  transform-origin: bottom right;
+}
+h1:hover::before {
+  transform: scaleX(1);
+	width: 100%;
+  transform-origin: bottom left;
+}
+h1::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  inset: 0 0 0 0;
+  background: #FF3A32;
+  z-index: -1;
+  transition: transform .3s ease;
+}
+h1 {
+    position: relative;
+    font-size: 5rem;
+    width: 70%;
+}
+html {
+  block-size: 100%;
+  inline-size: 100%;
+}
+h1{
+	background-size: 100%;
+	font-size: 80px;
+	text-align: right;
+	margin-right: 76%;
+	margin-left: 1%;
+	padding-right: 2%;
+	color: #070803;
+	text-decoration: none;
+	font-family: futura-pt, sans-serif;
+	font-variant: small-caps;
+	font-style: normal;
+	font-weight: bold;
+}	
+a:hover span {
+  text-decoration: underline;
+  color: blue!important;
+}
+.container {
+  position: absolute;
+  margin: 0px;
+  width: auto;
+} 	
+.topnav {
+  overflow: hidden;
+  display: block;
+  margin-right: 0%;
+  margin-top: 1%;
+  background-color: #FFFFFF;
+  
+}
+.topnav a {
+  margin-left: 2%;
+  margin-right: 2%;
+  float: left;
+  color: #020000;
+  text-align: center;
+  padding: 14px 16px;
+  width: 10%;
+  text-decoration: none;
+  text-align: center;
+  font-size: 17px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+}
+.topnav a:hover {
+  background-color: #FF3A32;
+  color: white;
+  width: 20%;
+}
+p{
+  width: 100%;
+	}
+.column {
+  flex: 50%;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  font-size: 12px;
+  margin-left: 3%;
+  margin-right: 3.5%;
+  width: 1px;
+  display: block;
+  margin-bottom: 6%;
+  margin-top: 3%;
+  text-align-last: left;
+  -moz-text-align-last: left;
+}
+.column2 {
+  flex: 50%;
+  margin-top: 3%;
+  padding: 0px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  text-align: justify;
+  font-size: 12px;
+  margin-right: 3%;
+  margin-bottom: 6%;
+  display: block;
+  text-align-last: left;
+  -moz-text-align-last: left;
+}
+}
+		
+</style>
+<footer>
+Jessie Patterson, 2022. </footer>
+</body>
+</html>

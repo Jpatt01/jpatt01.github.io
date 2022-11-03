@@ -1,0 +1,294 @@
+<!doctype html>
+<html>
+<head> 
+<meta charset="UTF-8">
+<title>hierarchy</title>
+<link href="CSS/styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div class="curzr" hidden></div>
+<script>
+class GlitchEffect {
+  constructor() {
+    this.root = document.body
+    this.cursor = document.querySelector(".curzr")
+
+    this.distanceX = 0, 
+    this.distanceY = 0,
+    this.pointerX = 0,
+    this.pointerY = 0,
+    this.previousPointerX = 0
+    this.previousPointerY = 0
+    this.cursorSize = 25
+    this.glitchColorB = '#00feff'
+    this.glitchColorR = '#ff4f71'
+
+    this.cursorStyle = {
+      boxSizing: 'border-box',
+      position: 'fixed',
+      top: `${ this.cursorSize / -2 }px`,
+      left: `${ this.cursorSize / -2 }px`,
+      zIndex: '2147483647',
+      width: `${ this.cursorSize }px`,
+      height: `${ this.cursorSize }px`,
+      backgroundColor: '#222',
+      borderRadius: '50%',
+      boxShadow: `0 0 0 ${this.glitchColorB}, 0 0 0 ${this.glitchColorR}`,
+      transition: '100ms, transform 100ms',
+      userSelect: 'none',
+      pointerEvents: 'none'
+    }
+
+    if (CSS.supports("backdrop-filter", "invert(1)")) {
+      this.cursorStyle.backdropFilter = 'invert(1)'
+      this.cursorStyle.backgroundColor = '#fff0'
+    } else {
+      this.cursorStyle.backgroundColor = '#222'
+    }
+
+    this.init(this.cursor, this.cursorStyle)
+  }
+
+  init(el, style) {
+    Object.assign(el.style, style)
+    this.cursor.removeAttribute("hidden")
+    
+  }
+
+  move(event) {
+    this.previousPointerX = this.pointerX
+    this.previousPointerY = this.pointerY
+    this.pointerX = event.pageX + this.root.getBoundingClientRect().x
+    this.pointerY = event.pageY + this.root.getBoundingClientRect().y
+    this.distanceX = Math.min(Math.max(this.previousPointerX - this.pointerX, -10), 10)
+    this.distanceY = Math.min(Math.max(this.previousPointerY - this.pointerY, -10), 10)
+
+    if (event.target.localName === 'button' || 
+        event.target.localName === 'a' || 
+        event.target.onclick !== null ||
+        event.target.className.includes('curzr-hover')) {
+      this.hover()
+    } else {
+      this.hoverout()
+    }
+
+    this.cursor.style.transform = `translate3d(${this.pointerX}px, ${this.pointerY}px, 0)`
+    this.cursor.style.boxShadow = `
+      ${+this.distanceX}px ${+this.distanceY}px 0 ${this.glitchColorB}, 
+      ${-this.distanceX}px ${-this.distanceY}px 0 ${this.glitchColorR}`
+    this.stop()
+  }
+
+  hover() {
+  }
+
+  hoverout() {
+  }
+
+  click() {
+    this.cursor.style.transform += ` scale(0.75)`
+    setTimeout(() => {
+      this.cursor.style.transform = this.cursor.style.transform.replace(` scale(0.75)`, '')
+    }, 35)
+  }
+
+  stop() {
+    if (!this.moving) {
+      this.moving = true
+      setTimeout(() => {
+        this.cursor.style.boxShadow = ''
+        this.moving = false
+      }, 50)
+    }
+  }
+
+  remove() {
+    this.cursor.remove()
+  }
+}
+
+(() => {
+  const cursor = new GlitchEffect()
+  if(!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    document.onmousemove = function (event) {
+      cursor.move(event)
+    }
+    document.onclick = function () {
+      cursor.click()
+    }
+  } else {
+    cursor.remove()
+  }
+})()
+</script>
+<div class="topnav">
+<a href="artists.html">Artists</a>
+<a href="graphic.html">Graphic</a>
+<a href="spatial.html">Spatial</a>
+<a href="about.html">About</a>
+<img src="images/4142.png" width="232" height="776" class="mobile"/>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="banner">
+			<img src="images/1920.png" width="100%" height="100%" class="hierarchy"/>
+			<h2 class="heading">Hierarchy in design is the organization of content by emphasizing certain elements and words and by
+			subordinating the other elements and text. Hierarchy implies importance and influences what people 
+			see first. The use of hierarchy helps people to know where to enter and exit a site and what to pick or 
+			choose.</h2>
+		  </div>
+		</div>
+	</div>
+<style> 
+	
+@media (max-width: 1920px){
+.mobile{
+	height: 0%;
+	width: 0%;
+	}
+.hierarchy{
+margin-top: 13%;
+margin-bottom: 14%;
+}
+*{margin: 0; padding: 0;}
+.banner{
+position: relative;
+width: 90%;
+margin: 0 auto;}
+.banner img{ 
+	width: 100%; 
+	height: 100%;}	
+.heading{ 
+	color: #2B2526; 
+	position: absolute;
+	top: 80%; 
+	width: 30%;
+	text-align: right; 
+	margin-left: 63.5%;;
+	font-size: 13px; 
+	font-family: futura-pt, sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	}	
+.container {
+  position: absolute;
+  margin: 0px;
+  width: auto;
+} 	
+.topnav {
+  overflow: hidden;
+  display: block;
+  margin-right: 1%;
+  margin-top: 1%;
+  background-color: #FFFFFF;
+  
+}
+.topnav a {
+  float: right;
+  color: #020000;
+  text-align: center;
+  padding: 14px 16px;
+  width: 5%;
+  text-decoration: none;
+  text-align: center;
+  font-size: 17px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+ 
+}
+.topnav a:hover {
+  background-color: #FF3A32;
+  color: white;
+}
+}
+	
+@media (max-width: 1280px){
+.vertical{
+	display: none;
+	}
+}
+	
+@media (max-width: 414px){
+.heading{ 
+	color: #2B2526; 
+	position: absolute;
+	top: 0%; 
+	width: 30%;
+	text-align: right; 
+	margin-left: 63.5%;
+	font-size: 13px; 
+	font-family: futura-pt, sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	}	
+.mobile{
+	margin-top: 10%;
+	height: 60%;
+	width: 60%;
+	}
+.banner{
+position: relative;
+width: 90%;
+margin: 0 auto;}
+.banner img{ 
+	width: 100%; 
+	height: 100%;}	
+.heading{ 
+	color: #2B2526; 
+	position: fixed;
+	top: 25%;
+	width: 40%;
+	text-align: left; 
+	margin-left:55%;
+	font-size: 13px; 
+	font-family: futura-pt, sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	}	
+.container {
+  position: absolute;
+  margin: 0px;
+  width: auto;
+} 	
+.hierarchy{
+	display: none
+	}	
+.topnav {
+  overflow: hidden;
+  display: block;
+  margin-right: 0%;
+  margin-top: 1%;
+  background-color: #FFFFFF;
+  
+}
+.topnav a {
+  margin-left: 2%;
+  margin-right: 2%;
+  float: left;
+  color: #020000;
+  text-align: center;
+  padding: 14px 16px;
+  width: 10%;
+  text-decoration: none;
+  text-align: center;
+  font-size: 17px;
+  font-family: futura-pt, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+}
+.topnav a:hover {
+  background-color: #FF3A32;
+  color: white;
+  width: 20%;
+}
+h2{
+	margin-left: 20%;
+	}
+}
+	
+	
+</style>
+</body>
+</html>
