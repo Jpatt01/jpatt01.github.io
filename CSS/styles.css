@@ -1,6 +1,9 @@
 @charset "UTF-8";
 .video{
-	margin-left: 5%;
+	margin-left:0%;
+	margin-bottom: 3%;
+	list-style-type: none;
+	
 }
 .welcome{
 	text-align:center; 
@@ -39,7 +42,7 @@
   color: #00000;
 }
 .presentation{
-	margin-left: 19%;
+	margin-left: 18%;
 	margin-top: 5%;
 
 }
